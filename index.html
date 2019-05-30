@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Growler</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <header class="header"></header>
+  <main id="growler">
+    <h1 v-once v-html="appName" v-bind:style="{color:isOnline ? '#FF6A00' : '#000'}"></h1>
+    <section class="section">
+      <input v-model.lazy.trim="query" type="text" placeholder="Search...">
+      <p>Searching for: {{ query }}</p>
+      <label for="beers">
+        <input v-model="searchIndexes" type="checkbox" value="beers" name="beers" id="beers">
+        Beers
+      </label>
+      </br>
+      <label for="breweries">
+        <input v-model="searchIndexes" type="checkbox" value="breweries" name="breweries" id="breweries">
+        Breweries
+      </label>
+      </br>
+      <small>selected: {{ searchIndexes }}</small>
+      </br>
+      <form>
+        <input v-model="query" type="search" placeholder="search...">
+        <button type="submit" v-on:click.prevent ="executeSearch">Search</button>
+        <!-- <div v-on:click="buttonGrandparentClick">
+          <div v-on:click="buttonParentClick">
+            <button v-on:click="executeSearch" type="button">Search</button>
+          </div>
+        </div> -->
+      </form>
+
+      <form v-on:submit.prevent action="..." method="GET">
+        <input type="search" v-model="query" v-on:keyup="evaluateKey" v-on:keyup.enter="executeSearch"/>
+        <button type="button" v-on:click.once="executeSearch">Search</button>
+      </form>
+
+      <ul>
+        <li v-for="page in pageCount">
+          <a href="#" v-on:click="search(page);">{{page}}</a>
+        </li>
+      </ul>
+
+      <ul v-cloak>
+        <li v-for="(v, k, i) in user">
+          {{i}} : {{k}} - {{v}}
+        </li>
+      </ul>
+
+      <ul>
+        <li v-for="(page, i) in pages">
+          <a v-bind:href="page.url">{{page.number}}</a>
+          <small>i: {{i}}</small>
+        </li>
+      </ul>
+
+      <div v-for="page in pages">
+        <b>Page {{ page.number }}</b>
+        <div v-for="sec in page.sections">{{ page.number }}-{{ sec }}</div>
+      </div>
+
+      <div>
+        <label for="abv">
+          <strong>Max Alcohol by Volume (a.b.v)</strong>
+        </label>
+        <input type="range" name="abv" id="abv" v-model="maxAbv" min="0" max="100">
+        <small>{{ maxAbv }}</small>
+      </div>
+      <ul>
+        <li><strong>Beers</strong></li>
+        <li v-for="beer in beers" v-if="beer.abv < maxAbv">{{ beer.name }}, abv {{ beer.abv }}</li>
+      </ul>
+
+      <p> Online? {{ isOnline }}</p>
+
+      <div v-for="result in results" v-cloak>
+        <div>{{ result.name }}: <small clas="text-muted">{{ result.ibu | convertIBU }}</small></div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="footer"></footer>
+  <script src="" async defer></script>
+  <script type="text/javascript" src="https://unpkg.com/vue"></script>
+  <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="./growler.js"></script>
+</body>
+
+</html>
